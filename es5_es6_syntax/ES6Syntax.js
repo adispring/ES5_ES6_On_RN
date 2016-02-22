@@ -12,14 +12,15 @@ import React, {
   TouchableHighlight
 } from 'react-native';
 
-class FancyCheckbox extends Component {
+class CustomText extends Component {
   render() {
-    var fancyClass = this.props.checked ? 'fancyChecked' : 'fancyUnChecked';
+    var {
+      className,
+      ...otherProps,
+    } = this.props;
     return (
-      <TouchableHighlight onPress={this.props.onPress}>
-        <Text>{this.props.children}</Text>
-      </TouchableHighlight>
-    );
+      <Text {...otherProps}>{className}</Text>
+    )
   }
 }
 
@@ -33,26 +34,39 @@ export default class ES6Syntax extends Component {
     name: React.PropTypes.string.isRequired,
     year: React.PropTypes.number.isRequired,
     label: React.PropTypes.string.isRequired,
-  };  // 注意这里有分号
+  };
+  state = {
+      esVersion: `${this.props.name} v1.0`,
+      clickCounts: 0,
+  };
   constructor(props) {
     super(props);
-    this.state = {
-        esVersion: this.props.name,
-    };
+    // this.buttonClick = this.buttonClick.bind(this);
+    // this.state = {
+    //     esVersion: `${this.props.name} v1.0`,
+    //     clickCounts: 0,
+    // };
     // Operations usually carried out in componentWillMount go here
-  }
+  };
+  // buttonClick(e) {
+  //   // Here, 'this' refers to the component instance.
+  //   this.setState({clickCounts: this.state.clickCounts + 1});
+  // }
+  buttonClick = (e) => {
+    // Here, 'this' refers to the component instance.
+    this.setState({clickCounts: this.state.clickCounts + 1});
+    // this.state.clickCounts += 1;
+  }; // 注意这里有分号
   render() {
     return (
       <View style={styles.container}>
         <Text style={styles.welcome}>
           {this.state.esVersion}, {this.props.year}, clickCounts: {this.state.clickCounts}
         </Text>
-        <TouchableHighlight onPress={this.handleOptionsButtonClick}>
-            <Text>{this.props.labelName}</Text>
+        <TouchableHighlight onPress={this.buttonClick}>
+          <Text>{this.props.label}</Text>
         </TouchableHighlight>
-        <FancyCheckbox checked={true} onPress={console.log.bind(console)}>
-          Hello world!
-        </FancyCheckbox>
+        <CustomText style={styles.welcome} onPress={this.buttonClick} className='CustomText' />
       </View>
     );
   }
