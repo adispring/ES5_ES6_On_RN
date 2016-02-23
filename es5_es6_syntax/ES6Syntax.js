@@ -29,6 +29,7 @@ export default class ES6Syntax extends Component {
     name: 'ES6Syntax',
     year: 2015,
     label: 'ClickMe',
+    inputName: 'inputName',
   };  // 注意这里有分号
   static propTypes = {
     name: React.PropTypes.string.isRequired,
@@ -55,15 +56,20 @@ export default class ES6Syntax extends Component {
   buttonClick = (e) => {
     // Here, 'this' refers to the component instance.
     this.setState({clickCounts: this.state.clickCounts + 1});
+    this.setState({
+      [`${this.props.inputName}`]: `${this.props.name}: ${this.state.clickCounts}`,
+    });
     // this.state.clickCounts += 1;
+
   }; // 注意这里有分号
   render() {
     return (
       <View style={styles.container}>
         <Text style={styles.welcome}>
-          {this.state.esVersion}, {this.props.year}, clickCounts: {this.state.clickCounts}
+          {this.state.esVersion}, {this.props.year}, clickCounts: {this.state[`${this.props.inputName}`]}
         </Text>
-        <TouchableHighlight onPress={this.buttonClick}>
+        <TouchableHighlight
+          onPress={this.buttonClick}>
           <Text>{this.props.label}</Text>
         </TouchableHighlight>
         <CustomText style={styles.welcome} onPress={this.buttonClick} className='CustomText' />
